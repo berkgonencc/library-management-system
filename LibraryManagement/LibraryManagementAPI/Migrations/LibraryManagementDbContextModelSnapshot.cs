@@ -35,6 +35,23 @@ namespace LibraryManagementAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Authors");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("d0be27e1-4515-4f81-a919-b1204ef58b10"),
+                            Name = "Ray Bradbury"
+                        },
+                        new
+                        {
+                            Id = new Guid("03ed0716-89d8-4267-9fa1-44271ffd3339"),
+                            Name = "Aldous Huxley"
+                        },
+                        new
+                        {
+                            Id = new Guid("87a25f21-2190-4c16-bb39-86fbd6da0de6"),
+                            Name = "Mary Shelley"
+                        });
                 });
 
             modelBuilder.Entity("LibraryManagementAPI.Models.Domain.Book", b =>
@@ -62,6 +79,48 @@ namespace LibraryManagementAPI.Migrations
                     b.HasIndex("AuthorId");
 
                     b.ToTable("Books");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("f47ac10b-58cc-4372-a567-0e02b2c3d479"),
+                            AuthorId = new Guid("d0be27e1-4515-4f81-a919-b1204ef58b10"),
+                            CheckedOut = false,
+                            ISBN = "0451524934",
+                            Title = "Fahrenheit 451"
+                        },
+                        new
+                        {
+                            Id = new Guid("6b29fc40-ca47-1067-b31d-00dd010662da"),
+                            AuthorId = new Guid("d0be27e1-4515-4f81-a919-b1204ef58b10"),
+                            CheckedOut = false,
+                            ISBN = "0735619670",
+                            Title = "The Halloween Tree"
+                        },
+                        new
+                        {
+                            Id = new Guid("550e8400-e29b-41d4-a716-446655440000"),
+                            AuthorId = new Guid("03ed0716-89d8-4267-9fa1-44271ffd3339"),
+                            CheckedOut = false,
+                            ISBN = "0735619444",
+                            Title = "Brave New World"
+                        },
+                        new
+                        {
+                            Id = new Guid("0e344965-9852-4c8b-a0b0-4f1e2c8fd8e3"),
+                            AuthorId = new Guid("03ed0716-89d8-4267-9fa1-44271ffd3339"),
+                            CheckedOut = false,
+                            ISBN = "0731234570",
+                            Title = "The Art of Seeing"
+                        },
+                        new
+                        {
+                            Id = new Guid("1eb2c51f-4b19-4a95-9bbf-90cb6a23d218"),
+                            AuthorId = new Guid("87a25f21-2190-4c16-bb39-86fbd6da0de6"),
+                            CheckedOut = false,
+                            ISBN = "0735619688",
+                            Title = "Frankenstein"
+                        });
                 });
 
             modelBuilder.Entity("LibraryManagementAPI.Models.Domain.Book", b =>
