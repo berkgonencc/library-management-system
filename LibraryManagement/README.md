@@ -24,8 +24,7 @@ To get started with the Library Management System, follow these steps:
 - Update the database connection string in the appsettings.json file:
     ```bash
     "ConnectionStrings": {
-  "DefaultConnection": "Host=your-postgresql-host;Database=librarydb;Username=your-username;Password=your-password"
-}
+  "DefaultConnection": "Host=your-postgresql-host;Database=librarydb;Username=your-username;Password=your-password"}
 
 3. Build and run the application:
     ```bash
