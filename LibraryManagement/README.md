@@ -19,17 +19,17 @@ To get started with the Library Management System, follow these steps:
    git clone https://github.com/yourusername/library-management-system.git
 
 2. Database Setup:
-- Create a PostgreSQL database. You can use DBeaver or any other PostgreSQL management tool.
-- Update the database connection string in the appsettings.json file:
+   - Create a PostgreSQL database. You can use DBeaver or any other PostgreSQL management tool.
+   - Update the database connection string in the appsettings.json file:
     ```bash
     "ConnectionStrings": {
   "DefaultConnection": "Host=your-postgresql-host;Database=librarydb;Username=your-username;Password=your-password"}```
 3. Database Migrations:
-- Create the initial migration to generate the database schema:
+   - Create the initial migration to generate the database schema:
    ```bash
    dotnet ef migrations add InitialCreate
    ```
-- Apply the initial migration to create the database schema:
+   - Apply the initial migration to create the database schema:
    ```bash
    dotnet ef database update
    ```
