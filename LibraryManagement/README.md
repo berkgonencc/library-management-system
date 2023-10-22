@@ -25,11 +25,11 @@ To get started with the Library Management System, follow these steps:
     "ConnectionStrings": {
   "DefaultConnection": "Host=your-postgresql-host;Database=librarydb;Username=your-username;Password=your-password"}```
 3. Database Migrations:
-   - Create the initial migration to generate the database schema:
+- Create the initial migration to generate the database schema:
    ```bash
    dotnet ef migrations add InitialCreate
    ```
-   - Apply the initial migration to create the database schema:
+- Apply the initial migration to create the database schema:
    ```bash
    dotnet ef database update
    ```
