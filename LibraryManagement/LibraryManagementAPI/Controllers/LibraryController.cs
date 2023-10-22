@@ -35,7 +35,7 @@ namespace LibraryManagementAPI.Controllers
 
         // GET: api/library/booksByAuthor
         // Retrieve a list of books by a specific author.
-        [HttpGet("booksByAuthor")]
+        [HttpGet("books-by-author")]
         public IActionResult GetBooksByAuthor([FromQuery] string authorName)
         {
             var books = _libraryService.GetBooksByAuthor(authorName);
@@ -49,7 +49,7 @@ namespace LibraryManagementAPI.Controllers
 
         // GET: api/library/checkedOutBooks
         // Retrieve a list of checked-out books.
-        [HttpGet("checkedOutBooks")]
+        [HttpGet("checked-out-books")]
         public IActionResult GetAllCheckedOutBooks()
         {
             var books = _libraryService.GetAllCheckedOutBooks();
