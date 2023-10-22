@@ -83,6 +83,10 @@ namespace LibraryManagementAPI.Services
                 {
                     books = isAscending ? books.OrderBy(x => x.ISBN) : books.OrderByDescending(x => x.ISBN);
                 }
+                else if (sortBy.Equals("Author", StringComparison.OrdinalIgnoreCase))
+                {
+                    books = isAscending ? books.OrderBy(x => x.Author.Name) : books.OrderByDescending(x => x.Author.Name);
+                }
             }
 
             // Pagination
