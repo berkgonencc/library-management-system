@@ -15,7 +15,6 @@ Before you get started, ensure you have the following tools and software install
 ## Getting Started
 To get started with the Library Management System, follow these steps:
 1. Clone the repository:
-
    ```bash
    git clone https://github.com/yourusername/library-management-system.git
 
@@ -24,27 +23,37 @@ To get started with the Library Management System, follow these steps:
 - Update the database connection string in the appsettings.json file:
     ```bash
     "ConnectionStrings": {
-  "DefaultConnection": "Host=your-postgresql-host;Database=librarydb;Username=your-username;Password=your-password"}
-
-3. Build and run the application:
+  "DefaultConnection": "Host=your-postgresql-host;Database=librarydb;Username=your-username;Password=your-password"}```
+3. Database Migrations:
+   - Create the initial migration to generate the database schema:
+   ```bash
+   dotnet ef migrations add InitialCreate
+   ```
+   - Apply the initial migration to create the database schema:
+   ```bash
+   dotnet ef database update
+   ```
+4. Build and run the application:
     ```bash
     dotnet restore
     dotnet build
     dotnet run
+    ```
+5. Use Swagger or any API testing tool to interact with the API endpoints.
 
-4. Use Swagger or any API testing tool to interact with the API endpoints.
-
-5. Run the unit tests to verify the functionality of the Library class.
+6. Run the unit tests to verify the functionality of the Library class.
 
 ## Docker Support
 This project is Docker-ready. If you prefer running the application in a Docker container, follow these steps:
 1. Build the Docker image:
     ```bash
     docker build -t library-management-system .
+    ```
 
 2. Run the Docker container:
     ```bash
     docker run -d -p 8080:80 library-management-system
+    ```
 The application will be available at http://localhost:8080.
 
 
@@ -62,9 +71,9 @@ The API provides the following endpoints:
 ## Testing
 Unit tests are included in the project. You can run them using a testing framework like xUnit. 
 Use the following command to run the tests:
-
+   ```bash
     dotnet test
-
+   ```
     
 
 
