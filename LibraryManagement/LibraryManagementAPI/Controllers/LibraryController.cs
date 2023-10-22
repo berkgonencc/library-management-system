@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using LibraryManagementAPI.Helpers;
-using LibraryManagementAPI.Models.Domain;
+﻿using AutoMapper;
+using LibraryManagementAPI.Models.DTO;
 using LibraryManagementAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,63 +10,51 @@ namespace LibraryManagementAPI.Controllers
     public class LibraryController : ControllerBase
     {
         private readonly ILibraryService _libraryService;
+        private readonly IMapper _mapper;
 
-        public LibraryController(ILibraryService libraryService)
+        public LibraryController(ILibraryService libraryService, IMapper mapper)
         {
             _libraryService = libraryService;
+            _mapper = mapper;
+        }
+        // api/books?filterOn=Name&filterQuery=Track&sortBy=Name&isAscending=true&pageNumber=1&pageSize=5
+        [HttpGet]
+        public async Task<IActionResult> GetAll(
+            [FromQuery] string? filterOn, [FromQuery] string? filterQuery,
+            [FromQuery] string? sortBy, [FromQuery] bool? isAscending
+            )
+        {
+
+            var booksDomainModel = await _libraryService.GetAllAsync(filterOn, filterQuery, sortBy, isAscending ?? true);
+            //return domain model to dto
+            return Ok(_mapper.Map<List<BookDto>>(booksDomainModel));
         }
 
         [HttpGet("booksByAuthor")]
-        public IActionResult GetBooksByAuthor(string authorName)
+        public IActionResult GetBooksByAuthor([FromQuery] string authorName)
         {
-            try
+            var books = _libraryService.GetBooksByAuthor(authorName);
+            if (books.Any())
             {
-                var library = _libraryService.GetLibrary();
-                var books = library.GetBooksByAuthor(authorName);
-                return Ok(books);
+                //return domain model to dto
+                return Ok(_mapper.Map<List<BookDto>>(books));
             }
-            catch (Exception ex)
-            {
-                //TODO:logger
-                return BadRequest(new ResponseMessage { Message = ex.Message });
-            }
-
+            return NotFound($"No books found for author: {authorName}");
         }
 
         [HttpGet("checkedOutBooks")]
         public IActionResult GetAllCheckedOutBooks()
         {
-            try
-            {
-                var library = _libraryService.GetLibrary();
-                var books = library.GetAllCheckedOutBooks();
-                return Ok(books);
-            }
-            catch (Exception ex)
-            {
-                //TODO:logger
-                return BadRequest(new ResponseMessage { Message = ex.Message });
-
-            }
-
+            var books = _libraryService.GetAllCheckedOutBooks();
+            //return domain model to dto
+            return Ok(_mapper.Map<List<BookDto>>(books));
         }
 
-        [HttpPost("checkout/{isbn}")]
+        [HttpPut("checkout/{isbn}")]
         public async Task<ActionResult<bool>> CheckOutBookAsync(string isbn)
         {
-            try
-            {
-                var library = _libraryService.GetLibrary();
-                var result = await library.CheckOutBookAsync(isbn);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                //TODO:logger
-                return BadRequest(new ResponseMessage { Message = ex.Message });
-
-            }
-
+            var result = await _libraryService.CheckOutBookAsync(isbn);
+            return Ok(result);
         }
     }
 }

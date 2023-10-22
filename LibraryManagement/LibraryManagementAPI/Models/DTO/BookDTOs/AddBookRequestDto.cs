@@ -1,14 +1,12 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace LibraryManagementAPI.Models.DTO
 {
-	public class UpdateBookRequestDto
+    public class AddBookRequestDto
 	{
         [Required]
         public string Title { get; set; }
         [Required]
-        [Range(0, 20)]
         public string ISBN { get; set; }
         [Required]
         public bool CheckedOut { get; set; }

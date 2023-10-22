@@ -1,10 +1,8 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using LibraryManagementAPI.Models.Domain;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace LibraryManagementAPI.Models.DTO
 {
-	public class AddAuthorRequestDto
+    public class AddAuthorRequestDto
 	{
         [Required]
         [MinLength(5, ErrorMessage = "Name has to be at least 5 characters.")]

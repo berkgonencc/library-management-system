@@ -1,15 +1,25 @@
-﻿using System.Text;
-using System.Text.Json.Serialization;
-using LibraryManagementAPI.Data;
+﻿using LibraryManagementAPI.Data;
 using LibraryManagementAPI.Mappings;
-using LibraryManagementAPI.Models.Domain;
-using LibraryManagementAPI.Repositories;
+using LibraryManagementAPI.Middlewares;
+using LibraryManagementAPI.Models;
 using LibraryManagementAPI.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using LibraryManagementAPI.Services.AuthorService;
+using LibraryManagementAPI.Services.BookService;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+//add Serilog -logging
+var logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("Logs/Library_Log.txt", rollingInterval: RollingInterval.Day)
+    .MinimumLevel.Information()
+    .CreateLogger();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -19,26 +29,15 @@ builder.Services.AddSwaggerGen();
 //Inject DbContext Class
 builder.Services.AddDbContext<LibraryManagementDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL")));
 
-builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
-builder.Services.AddScoped<IBookRepository, BookRepository>();
+builder.Services.AddScoped<IAuthorService, AuthorService>();
+builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<ILibraryService, LibraryService>();
-//builder.Services.AddScoped<Library>();
 
 
-
+//Add auto-mapper for DTOs
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
-//Authentication
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters
-{
-    ValidateIssuer = true,
-    ValidateAudience = true,
-    ValidateLifetime = true,
-    ValidateIssuerSigningKey = true,
-    ValidIssuer = builder.Configuration["Jwt:Issure"],
-    ValidAudience = builder.Configuration["Jwt:Audience"],
-    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-});
+
 
 var app = builder.Build();
 
@@ -50,9 +49,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ExceptionHandlerMiddleware>();
+
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

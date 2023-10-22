@@ -1,59 +1,115 @@
-﻿using LibraryManagementAPI.Models.Domain;
+﻿using LibraryManagementAPI.Data;
+using LibraryManagementAPI.Models;
+using LibraryManagementAPI.Models.Domain;
+using LibraryManagementAPI.Services;
+using Microsoft.EntityFrameworkCore;
+using Moq;
 
 namespace LibraryTests;
 
 public class LibraryTests
 {
     [Fact]
-    public void GetBooksByAuthor_ShouldReturnBooksByAuthor()
+    public async Task GetBooksByAuthor_Should_ReturnBooksByAuthor()
     {
         // Arrange
-        var library = new Library();
-        var author = new Author { Name = "John Doe" };
-        var book1 = new Book { Title = "Book 1", Author = author };
-        var book2 = new Book { Title = "Book 2", Author = author };
-        var book3 = new Book { Title = "Book 3", Author = new Author { Name = "Jane Smith" } };
-        library.Books.AddRange(new List<Book> { book1, book2, book3 });
+        var authorName = "Berk Gonenc";
+        var options = new DbContextOptionsBuilder<LibraryManagementDbContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+            .Options;
 
-        // Act
-        var booksByAuthor = library.GetBooksByAuthor("John Doe");
+        using (var context = new LibraryManagementDbContext(options))
+        {
+            var book1 = new Book { Author = new Author { Name = authorName }, Title = "Book 1", ISBN = "ISBN-1" };
+            var book2 = new Book { Author = new Author { Name = authorName }, Title = "Book 2", ISBN = "ISBN-2" };
+            var book3 = new Book { Author = new Author { Name = "Jane Smith" }, Title = "Book 3", ISBN = "ISBN-3" };
 
-        // Assert
-        Assert.Equal(2, booksByAuthor.Count);
+            context.Books.AddRange(book1, book2, book3);
+            await context.SaveChangesAsync();
+        }
+
+        using (var context = new LibraryManagementDbContext(options))
+        {
+            var libraryService = new LibraryService(context);
+
+            // Act
+            var booksByAuthor = libraryService.GetBooksByAuthor(authorName);
+
+            // Assert
+            Assert.Equal(2, booksByAuthor.Count);
+        }
     }
+
+
     [Fact]
-    public void GetAllCheckedOutBooks_ReturnsListOfCheckedOutBooks()
+    public async Task GetAllCheckedOutBooks_ReturnsListOfCheckedOutBooks()
     {
-        //Arrange
-        var library = new Library();
-        library.Books = new List<Book>
-         {
-            new Book { Title = "Book1", ISBN = "ISBN-1", Author = new Author { Name = "AuthorName" }, CheckedOut = true },
-            new Book { Title = "Book2", ISBN = "ISBN-2", Author = new Author { Name = "AuthorName" }, CheckedOut = false },
-            new Book { Title = "Book3", ISBN = "ISBN-3", Author = new Author { Name = "AuthorName" }, CheckedOut = true },
-            new Book { Title = "Book4", ISBN = "ISBN-4", Author = new Author { Name = "OtherAuthor" }, CheckedOut = true },
+        // Arrange
+        var options = new DbContextOptionsBuilder<LibraryManagementDbContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+            .Options;
+
+        using (var context = new LibraryManagementDbContext(options))
+        {
+            context.Books.AddRange(
+                new Book { Title = "Book1", ISBN = "ISBN-1", Author = new Author { Name = "AuthorName" }, CheckedOut = true },
+                new Book { Title = "Book2", ISBN = "ISBN-2", Author = new Author { Name = "AuthorName" }, CheckedOut = false },
+                new Book { Title = "Book3", ISBN = "ISBN-3", Author = new Author { Name = "AuthorName" }, CheckedOut = true },
+                new Book { Title = "Book4", ISBN = "ISBN-4", Author = new Author { Name = "OtherAuthor" }, CheckedOut = true }
+            );
+            await context.SaveChangesAsync();
+        }
+
+        using (var context = new LibraryManagementDbContext(options))
+        {
+            var libraryService = new LibraryService(context);
+
+            // Act
+            var checkedOutBooksResult = libraryService.GetAllCheckedOutBooks();
+
+            // Assert
+            Assert.Equal(3, checkedOutBooksResult.Count);
+        }
+    }
+
+    [Fact]
+    public async Task CheckOutBookAsync_ValidISBN_ShouldCheckOutBook()
+    {
+        // Arrange
+        // sets up an in-memory database 
+        var options = new DbContextOptionsBuilder<LibraryManagementDbContext>()
+           .UseInMemoryDatabase(Guid.NewGuid().ToString())
+           .Options;
+
+        //adds a book with a specific ISBN
+        var book = new Book
+        {
+            ISBN = "123456789",
+            Title = "Test Book",
+            Author = new Author { Name = "John Doe" },
+            CheckedOut = false
         };
 
-        //Act
-        var checkedOutBooks = library.GetAllCheckedOutBooks();
-        //Assert
-        Assert.Equal(3, checkedOutBooks.Count);
+        using (var context = new LibraryManagementDbContext(options))
+        {
+            context.Books.Add(book);
+            context.SaveChanges();
+        }
 
+        using (var context = new LibraryManagementDbContext(options))
+        {
+            var libraryService = new LibraryService(context);
+
+            // Act
+            var result = await libraryService.CheckOutBookAsync("123456789");
+
+            // Assert
+            Assert.True(result, "Expected check-out operation to succeed.");
+
+            var checkedOutBook = await context.Books.FirstOrDefaultAsync(b => b.ISBN == "123456789");
+            Assert.NotNull(checkedOutBook);
+            Assert.True(checkedOutBook.CheckedOut, "The book should be checked out.");
+        }
     }
 
-    [Fact]
-    public async Task CheckOutBookAsync_ShouldCheckOutBook()
-    {
-        // Arrange
-        var library = new Library();
-        var book = new Book { Title = "Book 1", ISBN = "1234" };
-        library.Books.Add(book);
-
-        // Act
-        var result = await library.CheckOutBookAsync("1234");
-
-        // Assert
-        Assert.True(result);
-        Assert.True(book.CheckedOut);
-    }
 }

@@ -6,7 +6,7 @@ namespace LibraryManagementAPI.Data
 {
     public class LibraryManagementDbContext : DbContext
     {
-        public LibraryManagementDbContext(DbContextOptions options) : base(options)
+        public LibraryManagementDbContext(DbContextOptions<LibraryManagementDbContext> options) : base(options)
         {
 
         }
@@ -62,7 +62,7 @@ namespace LibraryManagementAPI.Data
                     Id = Guid.Parse("550e8400-e29b-41d4-a716-446655440000"),
                     Title = "Brave New World",
                     ISBN = "0735619444",
-                    CheckedOut = false,
+                    CheckedOut = true,
                     AuthorId = Guid.Parse("03ed0716-89d8-4267-9fa1-44271ffd3339")
                 },
                 new Book
