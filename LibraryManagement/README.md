@@ -60,8 +60,8 @@ The API provides the following endpoints:
 * PUT /api/library/checkout/{isbn}: Change the CheckedOut status of the book.
 
 ## Testing
-Unit tests are included in the project. You can run them using a testing framework like xUnit. Use the following command to run the tests:
-
+Unit tests are included in the project. You can run them using a testing framework like xUnit. 
+Use the following command to run the tests:
     ```bash
     dotnet test
 
