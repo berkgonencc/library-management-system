@@ -2,7 +2,7 @@
 This is a basic library management system implemented in C# that allows you to manage a collection of books and perform various operations such as checking out books, retrieving books by author, and getting a list of checked-out books.
 
 ### Technologies Used:
-C# .Net, ASP.Net Core WebAPI, Docker, PostgreSQL, DBeaver.
+C#, ASP.Net Core WebAPI, Docker, PostgreSQL, DBeaver, LINQ, EFCore.
 
 ## Prerequisites
 Before you get started, ensure you have the following tools and software installed on your system:
