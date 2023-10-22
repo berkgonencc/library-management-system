@@ -13,28 +13,30 @@ namespace LibraryManagementAPI.Services
             _dbContext = context;
         }
 
+        // Get books by a specified author
         public List<Book> GetBooksByAuthor(string authorName)
         {
             authorName = authorName.ToLower();
-            // list of books written by specific author
+            // Return list of books written by specific author
             return _dbContext.Books
                 .Include("Author")
                 .Where(b => b.Author.Name.ToLower() == authorName)
                 .ToList();
         }
 
+        // Get a list of books that are currently borrowed (checked out)
         public List<Book> GetAllCheckedOutBooks()
         {
-            // list of books that are currently borrowed
+            // Return list of books that are currently borrowed
             return _dbContext.Books.Include("Author").Where(b => b.CheckedOut).ToList();
         }
 
-        // Changing CheckedOut status of the books
+        // Change the CheckedOut status of the book
         public async Task<bool> CheckOutBookAsync(string isbn)
         {
             Book? book = _dbContext.Books.Include("Author").FirstOrDefault(b => b.ISBN == isbn);
 
-            //if the book exists or not already checkedOut
+            // If the book exists or not already checkedOut
             if (book != null && !book.CheckedOut)
             {
                 // Simulate long-running operation
@@ -48,12 +50,12 @@ namespace LibraryManagementAPI.Services
             return false;
         }
 
-        // Get all books with filters
+        // Get all books with optional filters, and sorting
         public async Task<List<Book>> GetAllAsync(string? filterOn = null, string? filterQuery = null, string? sortBy = null, bool isAscending = true)
         {
             var books = _dbContext.Books.Include("Author").AsQueryable();
 
-            //Filter
+            // Filter
             if (string.IsNullOrWhiteSpace(filterOn) == false && string.IsNullOrWhiteSpace(filterQuery) == false)
             {
                 filterQuery = filterQuery.ToLower();
@@ -69,7 +71,7 @@ namespace LibraryManagementAPI.Services
                 }
             }
 
-            //Sorting
+            // Sorting
             if (string.IsNullOrWhiteSpace(sortBy) == false)
             {
                 if (sortBy.Equals("Title", StringComparison.OrdinalIgnoreCase))
@@ -83,9 +85,9 @@ namespace LibraryManagementAPI.Services
                 }
             }
 
-            //Pagination
-            //var skipResults = (pageNumber - 1) * pageSize;
-            //var result = await books.Skip(skipResults).Take(pageSize).ToListAsync();
+            // Pagination
+            // var skipResults = (pageNumber - 1) * pageSize;
+            // var result = await books.Skip(skipResults).Take(pageSize).ToListAsync();
             return await books.ToListAsync();
         }
     }

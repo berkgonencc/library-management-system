@@ -17,6 +17,9 @@ namespace LibraryManagementAPI.Controllers
             _libraryService = libraryService;
             _mapper = mapper;
         }
+
+        // GET: api/library
+        // Retrieve a list of books with optional filtering, and sorting.
         // api/books?filterOn=Name&filterQuery=Track&sortBy=Name&isAscending=true&pageNumber=1&pageSize=5
         [HttpGet]
         public async Task<IActionResult> GetAll(
@@ -24,12 +27,14 @@ namespace LibraryManagementAPI.Controllers
             [FromQuery] string? sortBy, [FromQuery] bool? isAscending
             )
         {
-
+            // Retrieve books based on specified filters, and/or sorting
             var booksDomainModel = await _libraryService.GetAllAsync(filterOn, filterQuery, sortBy, isAscending ?? true);
-            //return domain model to dto
+            // Return domain model to dto
             return Ok(_mapper.Map<List<BookDto>>(booksDomainModel));
         }
 
+        // GET: api/library/booksByAuthor
+        // Retrieve a list of books by a specific author.
         [HttpGet("booksByAuthor")]
         public IActionResult GetBooksByAuthor([FromQuery] string authorName)
         {
@@ -42,6 +47,8 @@ namespace LibraryManagementAPI.Controllers
             return NotFound($"No books found for author: {authorName}");
         }
 
+        // GET: api/library/checkedOutBooks
+        // Retrieve a list of checked-out books.
         [HttpGet("checkedOutBooks")]
         public IActionResult GetAllCheckedOutBooks()
         {
@@ -50,6 +57,8 @@ namespace LibraryManagementAPI.Controllers
             return Ok(_mapper.Map<List<BookDto>>(books));
         }
 
+        // PUT: api/library/checkout/{isbn}
+        // Check out a book by ISBN and return a result.
         [HttpPut("checkout/{isbn}")]
         public async Task<ActionResult<bool>> CheckOutBookAsync(string isbn)
         {

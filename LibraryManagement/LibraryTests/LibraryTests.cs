@@ -1,9 +1,7 @@
 ﻿using LibraryManagementAPI.Data;
-using LibraryManagementAPI.Models;
 using LibraryManagementAPI.Models.Domain;
 using LibraryManagementAPI.Services;
 using Microsoft.EntityFrameworkCore;
-using Moq;
 
 namespace LibraryTests;
 
