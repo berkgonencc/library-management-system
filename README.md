@@ -47,7 +47,7 @@ To get started with the Library Management System, follow these steps:
 This project is Docker-ready. If you prefer running the application in a Docker container, follow these steps:
 1. Build the Docker image:
     ```bash
-    docker build -t library-management-system .
+    docker run --name PostgreSQL -p 5432:5432 -e POSTGRES_PASSWORD=031506 -d postgres | User name = postgres
     ```
 
 2. Run the Docker container:
