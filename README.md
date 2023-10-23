@@ -20,7 +20,7 @@ To get started with the Library Management System, follow these steps:
 
 2. Build the Docker container:
     ```bash
-    docker run --name PostgreSQL -p 5432:5432 -e POSTGRES_PASSWORD=031506 -d postgres
+    docker run --name PostgreSQL -p 5432:5432 -e POSTGRES_PASSWORD=your-password -d postgres
     ```
 3. Install dotnet ef global tools
    ```bash
