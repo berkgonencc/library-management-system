@@ -18,7 +18,15 @@ To get started with the Library Management System, follow these steps:
    ```bash
    git clone https://github.com/berkgonencc/library-management-system.git
 
-2. Database Setup:
+2. Build the Docker container:
+    ```bash
+    docker run --name PostgreSQL -p 5432:5432 -e POSTGRES_PASSWORD=031506 -d postgres
+    ```
+3. Install dotnet ef global tools
+   ```bash
+   dotnet tool install --global dotnet-ef
+   ```
+4. Database Setup:
    - Create a PostgreSQL database. You can use DBeaver or any other PostgreSQL management tool.
    - Update the database connection string in the appsettings.json file:
     ```bash
@@ -26,15 +34,7 @@ To get started with the Library Management System, follow these steps:
     "PostgreSQL": "User ID=postgres;Password=your-password;Host=localhost;Port=5432;Database=LibraryAPIDb;"
     }
     ```
-3. Build the Docker container:
-    ```bash
-    docker run --name PostgreSQL -p 5432:5432 -e POSTGRES_PASSWORD=031506 -d postgres
-    ```
-4. Install dotnet ef global tools
-   ```bash
-   dotnet tool install --global dotnet-ef
-   ```
-3. Database Migrations:
+5. Database Migrations:
    - Create the initial migration to generate the database schema:
    ```bash
    dotnet ef migrations add InitialCreate
@@ -43,15 +43,15 @@ To get started with the Library Management System, follow these steps:
    ```bash
    dotnet ef database update
    ```
-4. Build and run the application:
+6. Build and run the application:
     ```bash
     dotnet restore
     dotnet build
     dotnet run
     ```
-5. Use Swagger or any API testing tool to interact with the API endpoints.
+7. Use Swagger or any API testing tool to interact with the API endpoints.
 
-6. Run the unit tests to verify the functionality of the Library class.
+8. Run the unit tests to verify the functionality of the Library class.
 
 ## API Endpoints
 The API provides the following endpoints:
