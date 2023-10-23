@@ -22,7 +22,9 @@ To get started with the Library Management System, follow these steps:
    - Create a PostgreSQL database. You can use DBeaver or any other PostgreSQL management tool.
    - Update the database connection string in the appsettings.json file:
     ```bash
-    "ConnectionStrings": {"DefaultConnection": "Host=your-postgresql-host;Database=librarydb;Username=your-username;Password=your-password"}
+      "ConnectionStrings": {
+    "PostgreSQL": "User ID=postgres;Password=your-password;Host=localhost;Port=5432;Database=LibraryAPIDb;"
+    }
     ```
 3. Build the Docker container:
     ```bash
