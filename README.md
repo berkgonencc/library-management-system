@@ -16,7 +16,7 @@ Before you get started, ensure you have the following tools and software install
 To get started with the Library Management System, follow these steps:
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/library-management-system.git
+   git clone https://github.com/berkgonencc/library-management-system.git
 
 2. Database Setup:
    - Create a PostgreSQL database. You can use DBeaver or any other PostgreSQL management tool.
