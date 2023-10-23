@@ -24,6 +24,14 @@ To get started with the Library Management System, follow these steps:
     ```bash
     "ConnectionStrings": {"DefaultConnection": "Host=your-postgresql-host;Database=librarydb;Username=your-username;Password=your-password"}
     ```
+3. Build the Docker container:
+    ```bash
+    docker run --name PostgreSQL -p 5432:5432 -e POSTGRES_PASSWORD=031506 -d postgres | User name = postgres
+    ```
+4. Install dotnet ef global tools
+   ```bash
+   dotnet tool install --global dotnet-ef
+   ```
 3. Database Migrations:
    - Create the initial migration to generate the database schema:
    ```bash
@@ -42,15 +50,6 @@ To get started with the Library Management System, follow these steps:
 5. Use Swagger or any API testing tool to interact with the API endpoints.
 
 6. Run the unit tests to verify the functionality of the Library class.
-
-## Docker Support
-This project is Docker-ready. If you prefer running the application in a Docker container, follow these steps:
-1. Build the Docker container:
-    ```bash
-    docker run --name PostgreSQL -p 5432:5432 -e POSTGRES_PASSWORD=031506 -d postgres | User name = postgres
-    ```
-    
-The application will be available at http://localhost:8080.
 
 ## API Endpoints
 The API provides the following endpoints:
