@@ -45,17 +45,12 @@ To get started with the Library Management System, follow these steps:
 
 ## Docker Support
 This project is Docker-ready. If you prefer running the application in a Docker container, follow these steps:
-1. Build the Docker image:
+1. Build the Docker container:
     ```bash
     docker run --name PostgreSQL -p 5432:5432 -e POSTGRES_PASSWORD=031506 -d postgres | User name = postgres
     ```
-
-2. Run the Docker container:
-    ```bash
-    docker run -d -p 8080:80 library-management-system
-    ```
+    
 The application will be available at http://localhost:8080.
-
 
 ## API Endpoints
 The API provides the following endpoints:
