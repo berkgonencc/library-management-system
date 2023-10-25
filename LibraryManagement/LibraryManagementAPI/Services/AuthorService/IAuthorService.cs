@@ -7,6 +7,7 @@ namespace LibraryManagementAPI.Services.AuthorService
 	{
         Task<List<Author>> GetAllAsync();
         Task<Author> CreateAsync(Author author);
+        Task<Author?> DeleteAsync(Guid id);
     }
 }
 

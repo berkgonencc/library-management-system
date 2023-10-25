@@ -21,6 +21,15 @@ namespace LibraryManagementAPI.Services.AuthorService
             return author;
         }
 
+        public async Task<Author?> DeleteAsync(Guid id)
+        {
+            var existingAuthor = await _dbContext.Authors.FirstOrDefaultAsync(a => a.Id == id);
+            if (existingAuthor == null) return null;
+            _dbContext.Authors.Remove(existingAuthor);
+            await _dbContext.SaveChangesAsync();
+            return existingAuthor;
+        }
+
         public async Task<List<Author>> GetAllAsync()
         {
             return await _dbContext.Authors.ToListAsync();

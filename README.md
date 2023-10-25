@@ -57,8 +57,9 @@ To get started with the Library Management System, follow these steps:
 The API provides the following endpoints:
 
 * GET /api/authors: Get a list of all authors.
-* POST /api/books: Create a new book.
 * POST /api/authors: Create a new author.
+* DELETE /api/authors/{id}: Delete the author.
+* POST /api/books: Create a new book.
 * GET /api/library: Get a list of all books.
 * GET /api/library/books-by-author: Get books by a specific author.
 * GET /api/library/checked-out-books: Get all checked-out books.

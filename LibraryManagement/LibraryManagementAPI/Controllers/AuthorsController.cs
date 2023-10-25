@@ -47,6 +47,16 @@ IMapper mapper)
             return Ok(_mapper.Map<AuthorDto>(authorDomainModel));
         }
 
+        // Delete Author
+        [HttpDelete("{id:Guid}")]
+        public async Task<IActionResult> DeleteAsync([FromRoute] Guid id)
+        {
+            var deletedAuthor = await _authorService.DeleteAsync(id);
+            if (deletedAuthor == null) return NotFound();
+            return Ok(_mapper.Map<AuthorDto>(deletedAuthor));
+
+        }
+
     }
 }
 
